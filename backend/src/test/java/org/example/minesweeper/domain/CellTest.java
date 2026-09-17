@@ -47,7 +47,7 @@ public class CellTest {
     }
 
     @Test
-    @DisplayName("열린 타일을 좌클릭하면 아무 변화가 없어야 한다.") // 버전 업그레이드로 한번에 열기 기능 추가 예정
+    @DisplayName("열린 타일을 좌클릭하면 아무 변화가 없어야 한다.")
     void doNothingOnOpenCell() {
         Cell cell = new Cell(); // 닫힌 셀을 생성하고
         cell.open(); // 연 뒤
