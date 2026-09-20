@@ -35,12 +35,18 @@ public class BoardTest {
     }
 
     @Test
-    @DisplayName("숫자 타일인 경우 표시된 숫자는 주변 칸의 지뢰 수가 같아야 한다.")
-    public void numberIsEqualToAdjacentMines() {
+    @DisplayName("첫 번째로 클릭하는 타일은 지뢰가 아니어야 한다.")
+    public void initialCellNotMine() {
+        Board board = new Board(5, 5, 10);
+        int x = random.nextInt(5);
+        int y = random.nextInt(5);
+        board.openCell(x, y);
+
+        assertThat(board.getCell(x, y).isMine()).isFalse();
     }
 
     @Test
-    @DisplayName("첫 번째로 클릭하는 타일은 지뢰가 아니어야 한다.")
-    public void initialCellNotMine() {
+    @DisplayName("숫자 타일인 경우 표시된 숫자는 주변 칸의 지뢰 수가 같아야 한다.")
+    public void numberIsEqualToAdjacentMines() {
     }
 }
