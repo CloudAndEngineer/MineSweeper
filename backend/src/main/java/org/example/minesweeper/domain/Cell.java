@@ -1,7 +1,7 @@
 package org.example.minesweeper.domain;
 
 public class Cell {
-    private int numberOfMines;
+    private int adjacentMineCount;
     private boolean isOpen = false;
     private boolean flag = false;
     private final boolean mine;
@@ -20,6 +20,10 @@ public class Cell {
 
     public boolean isMine() {
         return this.mine;
+    }
+
+    public int getAdjacentMineCount() {
+        return this.adjacentMineCount;
     }
 
     public void open() {
