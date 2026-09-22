@@ -40,11 +40,8 @@ public class BoardTest {
         Board board = new Board(5, 5, 10); // 5 * 5 Board를 생성하고 지뢰 개수를 10으로 설정하고
         board.openCell(random.nextInt(5), random.nextInt(5)); // 가로, 새로 좌표 0 ~ 4 중 하나를 클릭하면
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                assertThat(board.getCell(j, i)).isNotNull(); // Cell 정보를 불러왔을 때 객체가 할당되어 있어야 한다.
-            }
-        }
+        assertThat(board.getAllCells())
+                .allSatisfy(cell -> assertThat(cell).isNotNull());
     }
 
     @Test
