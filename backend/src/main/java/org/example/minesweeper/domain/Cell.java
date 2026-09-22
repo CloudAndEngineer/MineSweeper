@@ -1,8 +1,9 @@
 package org.example.minesweeper.domain;
 
 public class Cell {
-    private int adjacentMineCount;
+    private int adjacentMineCount = 0;
     private boolean isOpen = false;
+    private boolean isMineCountSet = false;
     private boolean flag = false;
     private final boolean mine;
 
@@ -35,6 +36,13 @@ public class Cell {
     public void toggleFlag() {
         if(!isOpen) {
             flag = !flag;
+        }
+    }
+
+    public void setMineCount(int adjacentMineCount) {
+        if(!isMineCountSet) {
+            this.adjacentMineCount = adjacentMineCount;
+            isMineCountSet = true;
         }
     }
 }
