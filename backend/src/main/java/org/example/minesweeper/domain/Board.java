@@ -1,5 +1,6 @@
 package org.example.minesweeper.domain;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Board {
     private GameStatus status = GameStatus.READY;
@@ -34,11 +35,22 @@ public class Board {
         return this.cells[y][x];
     }
 
+    public List<Cell> getAllCells() {
+        return Arrays.stream(cells)
+                .flatMap(Arrays::stream)
+                .toList(); // Java 16+ (Java 8~15는 .collect(Collectors.toList()))
+    }
+
     public boolean isValidPosition(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public void openCell(int x, int y) {
+
+        if(status.isFinished()) {
+            return;
+        }
+
         if(!isInitialized) {
             initCells(x, y);
             isInitialized = true;
@@ -47,14 +59,20 @@ public class Board {
         if(!cells[y][x].isOpen()) {
             cells[y][x].open();
 
+            if(cells[y][x].isMine()) {
+                status = GameStatus.LOST;
+                return;
+            }
+
             if(cells[y][x].getAdjacentMineCount() == 0) {
-                for (int i = x - 1; i <= x + 1; i++) {
-                    for (int j = y - 1; j <= y + 1; j++) {
-                        if (isValidPosition(i, j)) {
-                            cells[j][i].open();
-                        }
-                    }
-                }
+                recursiveOpen(x, y);
+            }
+
+            long isMine = getAllCells().stream().filter(Cell::isMine).count();
+            long isClosed = getAllCells().stream().filter(Predicate.not(Cell::isOpen)).count();
+
+            if(isMine == isClosed) {
+                status = GameStatus.WON;
             }
         }
     }
@@ -78,6 +96,8 @@ public class Board {
                 cells[j][i].setMineCount(countAdjacentMines(i, j));
             }
         }
+
+        status = GameStatus.IN_PROGRESS;
     }
 
     private Set<Integer> generateMinePositionExcluding(int x, int y) {
@@ -102,7 +122,7 @@ public class Board {
     }
 
     // 주변 지뢰 개수 계산 예시
-    public int countAdjacentMines(int x, int y) {
+    private int countAdjacentMines(int x, int y) {
         // 8방향 오프셋 (상, 하, 좌, 우, 상좌, 상우, 하좌, 하우)
         int[] DX = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] DY = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -125,9 +145,13 @@ public class Board {
         return mineCount;
     }
 
-    public List<Cell> getAllCells() {
-        return Arrays.stream(cells)
-                .flatMap(Arrays::stream)
-                .toList(); // Java 16+ (Java 8~15는 .collect(Collectors.toList()))
+    private void recursiveOpen(int x, int y) {
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (isValidPosition(i, j)) {
+                    cells[j][i].open();
+                }
+            }
+        }
     }
 }
