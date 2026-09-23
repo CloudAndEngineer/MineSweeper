@@ -8,8 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BoardTest {
-    Random random = new Random();
-
     @Test
     @DisplayName("지뢰 개수가 전체 칸 수 이상이면 IllegalArgumentException이 발생해야 한다.")
     public void createBoardWithInvalidMineCount() {
@@ -37,8 +35,8 @@ public class BoardTest {
     @Test
     @DisplayName("Board를 생성하고 첫 번째 클릭을 마친 이후에 모든 칸이 숫자 또는 지뢰인 Cell로 채워져야 한다.")
     public void everyCellFilled() {
-        Board board = new Board(5, 5, 10); // 5 * 5 Board를 생성하고 지뢰 개수를 10으로 설정하고
-        board.openCell(random.nextInt(5), random.nextInt(5)); // 가로, 새로 좌표 0 ~ 4 중 하나를 클릭하면
+        Board board = new Board(5, 5, 10);
+        board.openCell(4, 2);
 
         assertThat(board.getAllCells())
                 .allSatisfy(cell -> assertThat(cell).isNotNull());
@@ -48,11 +46,9 @@ public class BoardTest {
     @DisplayName("첫 번째로 클릭하는 타일은 지뢰가 아니어야 한다.")
     public void initialCellNotMine() {
         Board board = new Board(5, 5, 10);
-        int x = random.nextInt(5);
-        int y = random.nextInt(5);
-        board.openCell(x, y); // 처음 openCell을 호출하면 Board가 초기화된다.
+        board.openCell(3, 3); // 처음 openCell을 호출하면 Board가 초기화된다.
 
-        assertThat(board.getCell(x, y).isMine()).isFalse(); // 지뢰가 아니어야 한다.
+        assertThat(board.getCell(3, 3).isMine()).isFalse(); // 지뢰가 아니어야 한다.
     }
 
     @Test
@@ -61,16 +57,17 @@ public class BoardTest {
         int numberOfMine = 10;
         Board board = new Board(5, 5, numberOfMine);
         board.openCell(1, 2);
-        long count = board.getAllCells().stream().filter(Cell::isMine).count();
 
-        assertThat(count).isEqualTo(numberOfMine);
+        assertThat(board.getAllCells())
+                .filteredOn(Cell::isMine)
+                .hasSize(numberOfMine);
     }
 
     @Test
     @DisplayName("숫자 타일인 경우 표시된 숫자는 주변 칸의 지뢰 수가 같아야 한다.")
     public void numberIsEqualToAdjacentMines() {
         Board board = new Board(5, 5, 10);
-        board.openCell(random.nextInt(5), random.nextInt(5));
+        board.openCell(3, 4);
 
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
