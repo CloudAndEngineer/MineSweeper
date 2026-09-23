@@ -31,6 +31,18 @@ public class Board {
         }
     }
 
+    public GameStatus getStatus() {
+        return this.status;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
     public Cell getCell(int x, int y)  {
         return this.cells[y][x];
     }
