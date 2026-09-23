@@ -2,6 +2,7 @@ package org.example.minesweeper.domain;
 import java.util.*;
 
 public class Board {
+    private GameStatus status = GameStatus.READY;
     private final int width;
     private final int height;
     private final int numberOfMine;
