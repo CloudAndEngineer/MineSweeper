@@ -1,4 +1,4 @@
 package org.example.minesweeper.dto;
 
-public class GameCreateRequest {
+public record GameCreateRequest(int width, int height, int numberOfMine) {
 }
