@@ -60,18 +60,10 @@ public class BoardTest {
     public void numberOfMinesEqualToActualMines() {
         int numberOfMine = 10;
         Board board = new Board(5, 5, numberOfMine);
-        board.openCell(random.nextInt(5), random.nextInt(5));
-        int count = 0;
+        board.openCell(1, 2);
+        long count = board.getAllCells().stream().filter(Cell::isMine).count();
 
-        for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                if(board.getCell(x, y).isMine()) {
-                    ++count;
-                }
-            }
-        }
-
-        assertThat(numberOfMine).isEqualTo(count);
+        assertThat(count).isEqualTo(numberOfMine);
     }
 
     @Test
