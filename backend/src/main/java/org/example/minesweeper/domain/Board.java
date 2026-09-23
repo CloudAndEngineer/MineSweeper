@@ -53,10 +53,6 @@ public class Board {
                 .toList(); // Java 16+ (Java 8~15는 .collect(Collectors.toList()))
     }
 
-    public boolean isValidPosition(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
-    }
-
     public void openCell(int x, int y) {
 
         if(status.isFinished()) {
@@ -66,6 +62,10 @@ public class Board {
         if(!isInitialized) {
             initCells(x, y);
             isInitialized = true;
+        }
+
+        if(!isValidPosition(x, y)) { // to prevent NPE
+            return;
         }
 
         if(!cells[y][x].isOpen()) {
@@ -110,6 +110,10 @@ public class Board {
         }
 
         status = GameStatus.IN_PROGRESS;
+    }
+
+    private boolean isValidPosition(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     private Set<Integer> generateMinePositionExcluding(int x, int y) {
@@ -160,9 +164,7 @@ public class Board {
     private void recursiveOpen(int x, int y) {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (isValidPosition(i, j)) {
-                    cells[j][i].open();
-                }
+                openCell(i, j); // NPE is prevented in openCell()
             }
         }
     }
