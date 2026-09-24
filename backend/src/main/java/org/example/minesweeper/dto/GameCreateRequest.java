@@ -16,10 +16,6 @@ public record GameCreateRequest(
         int mineCount
 ) {
 
-    public static GameCreateRequest custom(int width, int height, int mineCount) {
-        return new GameCreateRequest(width, height, mineCount);
-    }
-
     // 필요한 경우 난이도별 정적 팩토리 메서드 추가 가능 (선택)
     public static GameCreateRequest easy() {
         return new GameCreateRequest(9, 9, 10);
