@@ -19,6 +19,12 @@ public class Board {
         this.numberOfMine = numberOfMine;
 
         this.cells = new Cell[height][width];
+
+        for (int x = 0; x < width; x++) { //
+            for (int y = 0; y < height; y++) {
+                this.cells[y][x] = new Cell(false);
+            }
+        }
     }
 
     private void validateBoardSizeAndMineCount(int width, int height, int numberOfMine) {
