@@ -9,7 +9,7 @@ public record BoardResponse (
         int width,
         int height,
         GameStatus status,
-        List<CellResponse> cells
+        List<CellResponse> cellResponses
 ) {
     public static BoardResponse of(UUID gameId, Board board) {
         List<CellResponse> cellResponses = new ArrayList<>();
