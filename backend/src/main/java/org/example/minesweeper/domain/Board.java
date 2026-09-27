@@ -7,6 +7,7 @@ public class Board {
     private final int width;
     private final int height;
     private final int numberOfMine;
+    private int remainingFlags;
     private boolean isInitialized = false;
     private final Cell[][] cells;
 
@@ -17,6 +18,7 @@ public class Board {
         this.width = width;
         this.height = height;
         this.numberOfMine = numberOfMine;
+        remainingFlags = this.numberOfMine;
 
         this.cells = new Cell[height][width];
 
@@ -92,6 +94,37 @@ public class Board {
             if(isMine == isClosed) {
                 status = GameStatus.WON;
             }
+        }
+    }
+
+    public void toggleFlag(int x, int y) {
+        if(status.isFinished()) {
+            return;
+        }
+
+        if(!isInitialized) {
+            return;
+        }
+
+        if(!isValidPosition(x, y)) {
+            return;
+        }
+
+        if(cells[y][x].isOpen()) { // From here, x and y is validated
+            return;
+        }
+
+        if(remainingFlags <= 0) {
+            return;
+        }
+
+        cells[y][x].toggleFlag(); // The board has remaining flags here
+
+        if(cells[y][x].isFlagged()) {
+            ++remainingFlags;
+        }
+        else {
+            --remainingFlags;
         }
     }
 
