@@ -14,7 +14,7 @@ public record BoardResponse (
     public static BoardResponse of(UUID gameId, Board board) {
         List<CellResponse> cellResponses = new ArrayList<>();
 
-        for (int y = 0; y < board.getHeight(); y++) {
+        for (int y = 0; y < board.getHeight(); y++) { // Get updated status of cells
             for (int x = 0; x < board.getWidth(); x++) {
                 cellResponses.add(CellResponse.from(x, y, board.getCell(x, y)));
             }
