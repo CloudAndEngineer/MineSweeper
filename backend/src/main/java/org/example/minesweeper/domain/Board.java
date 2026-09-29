@@ -76,6 +76,10 @@ public class Board {
             return;
         }
 
+        if(cells[y][x].isFlagged()) {
+            return;
+        }
+
         if(!cells[y][x].isOpen()) {
             cells[y][x].open();
 
