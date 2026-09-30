@@ -52,11 +52,22 @@ const startNewGame = async () => {
     }
 
     const data = await response.json();
+    console.log('백엔드 응답 데이터:', data);
 
     // 2. 백엔드 응답 구조에 맞게 데이터 상태 갱신
     gameId.value = data.id;
-    board.value = data.board; // 또는 data.cells (백엔드 DTO 필드명 확인)
     gameStatus.value = data.status || 'IN_PROGRESS';
+
+    const width = data.width;
+    const cells = data.cellResponses || [];
+
+    // 2. 1차원 cellResponses 배열을 width 기준으로 2차원 배열로 변환
+    const formattedBoard = [];
+    for (let i = 0; i < cells.length; i += width) {
+      formattedBoard.push(cells.slice(i, i + width));
+    }
+
+    board.value = formattedBoard;
 
   } catch (error) {
     console.error('새 게임 시작 중 오류 발생:', error);
