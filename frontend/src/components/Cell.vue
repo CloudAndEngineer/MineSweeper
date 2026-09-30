@@ -61,7 +61,7 @@ const cellClass = computed(() => ({
 .cell {
   width: 36px;
   height: 36px;
-  background-color: #e4e4e7;
+  background-color: #aaaaaa;
   border: 1px solid #a1a1aa;
   font-size: 18px;
   font-weight: bold;
