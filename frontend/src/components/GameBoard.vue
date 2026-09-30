@@ -55,7 +55,7 @@ const startNewGame = async () => {
     console.log('백엔드 응답 데이터:', data);
 
     // 2. 백엔드 응답 구조에 맞게 데이터 상태 갱신
-    gameId.value = data.id;
+    gameId.value = data.gameId;
     gameStatus.value = data.status || 'IN_PROGRESS';
 
     const width = data.width;
@@ -69,6 +69,8 @@ const startNewGame = async () => {
 
     board.value = formattedBoard;
 
+    updateBoard(data)
+
   } catch (error) {
     console.error('새 게임 시작 중 오류 발생:', error);
     alert('새 게임을 시작할 수 없습니다. 백엔드 서버 상태를 확인해 주세요.');
@@ -77,7 +79,13 @@ const startNewGame = async () => {
 
 // 셀 좌클릭 (열기)
 const onCellClick = async (x, y) => {
-  if (!gameId.value) return;
+  console.log('2. GameBoard.vue 클릭 수신 좌표:', x, y);
+  console.log('현재 gameId:', gameId.value);
+
+  if (!gameId.value) {
+    console.log('Guard Clause!!')
+    return;
+  }
 
   try {
     const response = await fetch(`${API_BASE_URL}/${gameId.value}/open`, {
@@ -110,6 +118,9 @@ const onCellFlag = async (x, y) => {
     const data = await response.json();
 
     board.value = data.board;
+
+    updateBoard(data);
+
   } catch (error) {
     console.error('깃발 토글 실패:', error);
   }
@@ -117,6 +128,7 @@ const onCellFlag = async (x, y) => {
 
 // 백엔드 응답(data)을 2차원 배열로 만드는 공통 함수
 const updateBoard = (data) => {
+  console.log('백엔드 전체 응답:', data);
   gameStatus.value = data.status;
 
   const width = data.width;

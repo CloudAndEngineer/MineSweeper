@@ -31,6 +31,7 @@ const emit = defineEmits(['click', 'right-click']);
 
 // 좌클릭 이벤트 발생
 const handleClick = () => {
+  console.log("1. Cell.vue 클릭됨")
   emit('click', props.x, props.y);
 };
 
@@ -44,7 +45,7 @@ const cellContent = computed(() => {
   if (props.cell.isFlagged) return '🚩';
   if (!props.cell.isOpen) return '';
   if (props.cell.isMine) return '💣';
-  return props.cell.nearMineCount > 0 ? props.cell.nearMineCount : '';
+  return props.cell.adjacentMineCount > 0 ? props.cell.adjacentMineCount : '';
 });
 
 // 셀 상태에 따른 CSS 클래스
@@ -52,7 +53,7 @@ const cellClass = computed(() => ({
   'open': props.cell.isOpen,
   'mine': props.cell.isOpen && props.cell.isMine,
   'flagged': props.cell.isFlagged,
-  [`number-${props.cell.nearMineCount}`]: props.cell.isOpen && !props.cell.isMine && props.cell.nearMineCount > 0
+  [`number-${props.cell.adjacentMineCount}`]: props.cell.isOpen && !props.cell.isMine && props.cell.adjacentMineCount > 0
 }));
 </script>
 
