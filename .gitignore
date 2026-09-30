@@ -38,3 +38,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Frontend ###
+**/node_modules
+.vite/
+dist/
+*.local
