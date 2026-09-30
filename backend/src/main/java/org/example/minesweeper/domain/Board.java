@@ -118,7 +118,7 @@ public class Board {
             return;
         }
 
-        if(remainingFlags <= 0) {
+        if(remainingFlags <= 0 && !cells[y][x].isFlagged()) {
             return;
         }
 
