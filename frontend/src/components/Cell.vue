@@ -1,40 +1,43 @@
 <template>
   <div
       class="cell"
-      :class="{ revealed: cell.isRevealed, flagged: cell.isFlagged }"
+      :class="cellClass"
       @click="handleClick"
       @contextmenu.prevent="handleRightClick"
   >
-    <!-- 셀 내부 표시 (깃발, 지뢰, 숫자 등) -->
-    <span v-if="cell.isFlagged">🚩</span>
-    <span v-else-if="cell.isRevealed && cell.isMine">💣</span>
-    <span v-else-if="cell.isRevealed && cell.adjacentMines > 0">
-      {{ cell.adjacentMines }}
-    </span>
+    {{ cellContent }}
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue';
-import Cell from './Cell.vue'
 
 const props = defineProps({
   cell: {
     type: Object,
     required: true
+  },
+  x: {
+    type: Number,
+    required: true
+  },
+  y: {
+    type: Number,
+    required: true
   }
 });
 
-// API 연동 예시 함수
-const onCellClick = (x, y) => {
-  // 백엔드 Cell Open API 호출
-}
+const emit = defineEmits(['click', 'right-click']);
 
-const onCellFlag = (x, y) => {
-  // 백엔드 Flag Toggle API 호출
-}
+// 좌클릭 이벤트 발생
+const handleClick = () => {
+  emit('click', props.x, props.y);
+};
 
-defineEmits(['click', 'right-click']);
+// 우클릭 이벤트 발생
+const handleRightClick = () => {
+  emit('right-click', props.x, props.y);
+};
 
 // 셀 상태에 따른 표시 텍스트/이모지
 const cellContent = computed(() => {
@@ -46,10 +49,10 @@ const cellContent = computed(() => {
 
 // 셀 상태에 따른 CSS 클래스
 const cellClass = computed(() => ({
-    'open': props.cell.isOpen,
-    'mine': props.cell.isOpen && props.cell.isMine,
-    'flagged': props.cell.isFlagged,
-    [`number-${props.cell.nearMineCount}`]: props.cell.isOpen && !props.cell.isMine && props.cell.nearMineCount > 0
+  'open': props.cell.isOpen,
+  'mine': props.cell.isOpen && props.cell.isMine,
+  'flagged': props.cell.isFlagged,
+  [`number-${props.cell.nearMineCount}`]: props.cell.isOpen && !props.cell.isMine && props.cell.nearMineCount > 0
 }));
 </script>
 
@@ -85,12 +88,12 @@ const cellClass = computed(() => ({
   background-color: #ef4444;
 }
 
-.cell.number-1 { color: blue; }
-.cell.number-2 { color: green; }
-.cell.number-3 { color: red; }
-.cell.number-4 { color: purple; }
-.cell.number-5 { color: orange; }
-.cell.number-6 { color: cyan; }
-.cell.number-7 { color: darkblue; }
-.cell.number-8 { color: black; }
+.cell.number-1 { color: #2563eb; }
+.cell.number-2 { color: #16a34a; }
+.cell.number-3 { color: #dc2626; }
+.cell.number-4 { color: #9333ea; }
+.cell.number-5 { color: #ea580c; }
+.cell.number-6 { color: #0891b2; }
+.cell.number-7 { color: #1e3a8a; }
+.cell.number-8 { color: #18181b; }
 </style>
