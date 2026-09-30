@@ -89,6 +89,9 @@ const onCellClick = async (x, y) => {
 
     board.value = data.board;
     gameStatus.value = data.status;
+
+    updateBoard(data)
+
   } catch (error) {
     console.error('셀 오픈 실패:', error);
   }
@@ -110,6 +113,21 @@ const onCellFlag = async (x, y) => {
   } catch (error) {
     console.error('깃발 토글 실패:', error);
   }
+};
+
+// 백엔드 응답(data)을 2차원 배열로 만드는 공통 함수
+const updateBoard = (data) => {
+  gameStatus.value = data.status;
+
+  const width = data.width;
+  const cells = data.cellResponses || [];
+
+  const formattedBoard = [];
+  for (let i = 0; i < cells.length; i += width) {
+    formattedBoard.push(cells.slice(i, i + width));
+  }
+
+  board.value = formattedBoard; // 반응형 보드 상태 업데이트
 };
 
 // 마운트 시 첫 게임 자동으로 생성
