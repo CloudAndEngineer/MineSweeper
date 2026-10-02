@@ -17,24 +17,24 @@ public class GlobalExceptionHandler {
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .orElse("유효하지 않은 요청 데이터입니다.");
         ErrorResponse response = ErrorResponse.of(
-                HttpStatus.BAD_REQUEST.value(),
-                "BAD_REQUEST",
+                HttpStatus.UNPROCESSABLE_CONTENT.value(),
+                "UNPROCESSABLE_CONTENT",
                 errorMessage
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(response);
     }
 
-    // 도메인 내부 검증 실패 시 (400)
+    // 도메인 내부 검증 실패 시 (422)
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
         ErrorResponse response = ErrorResponse.of(
-                HttpStatus.BAD_REQUEST.value(),
-                "BAD_REQUEST",
+                HttpStatus.UNPROCESSABLE_CONTENT.value(),
+                "UNPROCESSABLE_CONTENT",
                 e.getMessage()
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(response);
     }
 
     // 존재하지 않는 gameId 요청 시 (404)

@@ -64,16 +64,16 @@ public class GameApiControllerTest {
     }
 
     @Test
-    @DisplayName("잘못된 데이터로 게임 생성을 요청하면 400 Bad Request를 반환한다.")
+    @DisplayName("잘못된 데이터로 게임 생성을 요청하면 422 Unprocessable Content를 반환한다.")
     public void createGameValidationFailure() throws Exception {
         GameCreateRequest request = new GameCreateRequest(0, 1, 3); // malformed data: width
 
         mockMvc.perform(post("/api/v1/games")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.error").value("BAD_REQUEST"));
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.status").value(422))
+                .andExpect(jsonPath("$.error").value("UNPROCESSABLE_CONTENT"));
     }
 }
 
