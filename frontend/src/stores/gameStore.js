@@ -6,6 +6,7 @@ export const useGameStore = defineStore('game', () => {
     const board = ref([]);
     const gameId = ref(null);
     const gameStatus = ref('IN_PROGRESS');
+    const remainingFlags = ref(0);
 
     // 난이도 설정 (기본값: EASY)
     const mode = ref('EASY'); // 'EASY' | 'MEDIUM' | 'HARD' | 'CUSTOM'
@@ -39,6 +40,10 @@ export const useGameStore = defineStore('game', () => {
 
         gameId.value = data.gameId || data.id;
         gameStatus.value = data.status;
+
+        if (data.remainingFlags !== undefined) {
+            remainingFlags.value = data.remainingFlags
+        }
 
         const w = data.width || width.value;
         const cells = data.cellResponses || [];
@@ -119,6 +124,7 @@ export const useGameStore = defineStore('game', () => {
         board,
         gameId,
         gameStatus,
+        remainingFlags,
         mode,
         width,
         height,

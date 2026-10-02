@@ -19,7 +19,7 @@
         <input type="number" v-model="gameStore.mineCount" placeholder="지뢰 수" min="1" />
       </div>
 
-      <div class="mine-count">💣 남은 지뢰: {{ gameStore.remainingMines }}</div>
+      <div class="mine-count">💣 남은 지뢰: {{ gameStore.remainingFlags }}</div>
       <button class="new-game-btn" @click="gameStore.startNewGame">새 게임</button>
       <div v-if="gameStore.gameStatus" class="status">상태: {{ gameStore.gameStatus }}</div>
     </div>
