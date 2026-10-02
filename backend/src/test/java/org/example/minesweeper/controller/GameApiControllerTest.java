@@ -46,6 +46,7 @@ public class GameApiControllerTest {
                 gameId,
                 9,
                 9,
+                10,
                 GameStatus.READY,
                 Collections.emptyList()
         );
