@@ -56,6 +56,18 @@ public class GameServiceTest {
     }
 
     @Test
+    @DisplayName("깃발을 꽂으면 BoardResponse에서 remainingFlags가 한 개 줄어야 한다.")
+    public void toggleFlag() {
+        BoardResponse createdGame = gameService.createGame(new GameCreateRequest(9, 9, 79));
+
+        BoardResponse updatedGame = gameService.openCell(createdGame.gameId(), new CellActionRequest(0, 0));
+
+        BoardResponse flaggedGame = gameService.toggleFlag(updatedGame.gameId(), new CellActionRequest(4, 4));
+
+        assertThat(flaggedGame.remainingFlags()).isEqualTo(78);
+    }
+
+    @Test
     @DisplayName("존재하지 않는 gameId로 요청 시 GameNotFoundException이 발생한다.")
     public void findByNonExistentId() {
         UUID nonExistentId = UUID.randomUUID();
