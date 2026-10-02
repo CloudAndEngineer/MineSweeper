@@ -2,7 +2,7 @@
   <div id="app">
     <header class="app-header">
       <h1 class="title">💣 Minesweeper</h1>
-      <p class="subtitle">Spring Boot 3.4 & Vue 3 로 제작된 지뢰찾기</p>
+      <p class="subtitle">Spring Boot 4.1.1 & Vue 3 로 제작된 지뢰찾기</p>
     </header>
 
     <main class="app-content">
