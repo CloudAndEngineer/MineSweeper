@@ -8,6 +8,7 @@ public record BoardResponse (
         UUID gameId,
         int width,
         int height,
+        int remainingFlags,
         GameStatus status,
         List<CellResponse> cellResponses
 ) {
@@ -24,6 +25,7 @@ public record BoardResponse (
                 gameId,
                 board.getWidth(),
                 board.getHeight(),
+                board.getRemainingFlags(),
                 board.getStatus(),
                 cellResponses
         );

@@ -55,6 +55,10 @@ public class Board {
         return this.cells[y][x];
     }
 
+    public int getRemainingFlags() {
+        return this.remainingFlags;
+    }
+
     public List<Cell> getAllCells() {
         return Arrays.stream(cells)
                 .flatMap(Arrays::stream)
