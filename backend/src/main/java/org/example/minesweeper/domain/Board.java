@@ -128,11 +128,11 @@ public class Board {
 
         cells[y][x].toggleFlag(); // The board has remaining flags here
 
-        if(cells[y][x].isFlagged()) {
-            ++remainingFlags;
+        if(cells[y][x].isFlagged()) { // After toggling flag.
+            --remainingFlags;
         }
         else {
-            --remainingFlags;
+            ++remainingFlags;
         }
     }
 
