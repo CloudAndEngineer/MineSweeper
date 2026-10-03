@@ -95,13 +95,16 @@ public class Board {
             if(cells[y][x].getAdjacentMineCount() == 0) {
                 recursiveOpen(x, y);
             }
+        }
+        else if(cells[y][x].getAdjacentMineCount() != 0 && countAdjacent(x, y, "flag") == cells[y][x].getAdjacentMineCount()) {
+            recursiveOpen(x, y);
+        }
 
-            long isMine = getAllCells().stream().filter(Cell::isMine).count();
-            long isClosed = getAllCells().stream().filter(Predicate.not(Cell::isOpen)).count();
+        long isMine = getAllCells().stream().filter(Cell::isMine).count();
+        long isClosed = getAllCells().stream().filter(Predicate.not(Cell::isOpen)).count();
 
-            if(isMine == isClosed) {
-                status = GameStatus.WON;
-            }
+        if(isMine == isClosed) {
+            status = GameStatus.WON;
         }
     }
 
@@ -152,7 +155,7 @@ public class Board {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                cells[j][i].setMineCount(countAdjacentMines(i, j));
+                cells[j][i].setMineCount(countAdjacent(i, j, "mine"));
             }
         }
 
@@ -184,13 +187,13 @@ public class Board {
         return minePositions;
     }
 
-    // 주변 지뢰 개수 계산 예시
-    private int countAdjacentMines(int x, int y) {
+    private int countAdjacent(int x, int y, String type) {
         // 8방향 오프셋 (상, 하, 좌, 우, 상좌, 상우, 하좌, 하우)
         int[] DX = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] DY = {-1, -1, -1, 0, 0, 1, 1, 1};
 
         int mineCount = 0;
+        int flagCount = 0;
 
         for (int i = 0; i < 8; i++) {
             int nx = x + DX[i];
@@ -202,16 +205,25 @@ public class Board {
                 if (cells[ny][nx].isMine()) {
                     mineCount++;
                 }
+                if (cells[ny][nx].isFlagged()) {
+                    flagCount++;
+                }
             }
         }
 
-        return mineCount;
+        if (type.equals("mine")) {
+            return mineCount;
+        } else { // flag
+            return flagCount;
+        }
     }
 
     private void recursiveOpen(int x, int y) {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                openCell(i, j); // NPE is prevented in openCell()
+                if (isValidPosition(i, j) && !cells[j][i].isOpen()) { // StackOverflowError occurs if this statement doesn't exist
+                    openCell(i, j); // NPE is prevented in openCell()
+                }
             }
         }
     }
