@@ -44,3 +44,4 @@ build/
 .vite/
 dist/
 *.local
+**/package-lock.json
